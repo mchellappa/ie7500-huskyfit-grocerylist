@@ -140,3 +140,63 @@ A classification system to categorize extracted ingredients/recipes into food gr
 A performance evaluation framework to assess the accuracy of extraction and categorization 
 
 An interface to generate and extract ingredients from recipe text. 
+
+# FastAPI Recipe Processing Application
+
+This project is a FastAPI application that processes recipe text to extract quantities and ingredients using a SpaCy model. 
+
+## Project Structure
+
+```
+Project
+├── src
+│   ├── main.py          # Entry point of the FastAPI application
+│   ├── spacy_train.py   # Logic for initializing SpaCy model and processing text
+│   └── types
+│       └── index.ts     # TypeScript interfaces for type checking
+├── requirements.txt      # Project dependencies
+├── README.md             # Project documentation
+└── .env                  # Environment variables
+```
+
+## Setup Instructions
+
+1. **Clone the repository:**
+   ```
+   git clone <repository-url>
+   cd my-fastapi-app
+   ```
+
+2. **Create a virtual environment:**
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+
+3. **Install dependencies:**
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables:**
+   Create a `.env` file in the root directory and add any necessary configuration settings.
+
+## Usage
+
+To run the FastAPI application, execute the following command:
+
+```
+uvicorn src.main:app --reload
+```
+
+You can then send a POST request to the `/process-recipe` endpoint with the recipe text to receive processed quantities and ingredients.
+
+## API Endpoint
+
+- **POST /process-recipe**
+  - Request Body: JSON object containing the recipe text.
+  - Response: JSON object with extracted quantities and ingredients.
+
+## License
+
+This project is licensed under the MIT License.
