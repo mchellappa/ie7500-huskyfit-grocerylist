@@ -1,22 +1,24 @@
 import re
 import ast
-# def extract_quantities(text):
-#     """Extract quantities and their units from the text."""
-#     #quantity_pattern = r"(\d+\s?(?:c|tbsp|tsp|oz|lbs?|g|ml|liters?|cups?|cup|pkg|pound|pounds|grams?|teaspoons?|tablespoons?|\d+/\d+)\.?)"
-#     quantity_pattern = r"(\d+/\d+|\d+(\.\d+)?\s?(cups?|tablespoons?|teaspoons?|oz|grams?|kg|ml|liters?|tbsp|tsp|lb|lbs?|pounds?|g))"
 
-#     quantities = []
-#     for match in re.finditer(quantity_pattern, text):
-#         quantities.append((match.start(), match.end(), "QUANTITY"))
-#     return quantities
 
-quantity_pattern = r"(\d+/\d+|\d+(\.\d+)?\s?(cups?|tablespoons?|teaspoons?|oz|grams?|kg|ml|liters?|tbsp|tsp|lb|lbs?|pounds?|g))"
 def extract_quantities(text):
-    """Extract quantity and unit from the text."""
-    quantities = []
-    for match in re.finditer(quantity_pattern, text):
-        quantities.append((match.start(), match.end(), "QUANTITY"))
-    return quantities
+    """Extract quantities from the text."""
+    quantity_patterns = [
+        r'\b\d+\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b',
+        r'\b\d+/\d+\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b',
+        r'\b\d+\s*(?:and\s*\d+/\d+)?\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b',
+        r'\b\d+\s*(?:-\s*\d+)?\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b',
+        r'\b\d+\s*(?:to\s*\d+)?\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b',
+        r'\b\d+\s*(?:\.\d+)?\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b',
+        r'\b½\s*(?:cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons|oz|ounce|ounces|lb|pound|pounds|g|gram|grams|kg|kilogram|kilograms|ml|milliliter|milliliters|l|liter|liters)\b'
+    ]
+    entities = []
+    for pattern in quantity_patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            entities.append((match.start(), match.end(), "QUANTITY"))
+    return entities
 
 def get_clean_ingredients(ingredient_list):
     """Clean the ingredients list to be used for NER."""
