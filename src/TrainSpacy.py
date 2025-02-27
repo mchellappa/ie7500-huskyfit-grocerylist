@@ -7,7 +7,7 @@ import glob
 nlp = spacy.blank("en")
 doc_bin = DocBin()
 
-for chunk_file in glob.glob("ner_training_data_chunk_*.spacy"):
+for chunk_file in glob.glob("ner/ner_training_data_chunk_*.spacy"):
     chunk_bin = DocBin().from_disk(chunk_file)
     for doc in chunk_bin.get_docs(nlp.vocab):
         doc_bin.add(doc)

@@ -50,6 +50,6 @@ for i in range(0, len(df), chunk_size):
             doc_bin.add(doc)
 
     # Save the processed training data in SpaCy format for each chunk
-    doc_bin.to_disk(f"ner_training_data_chunk_{i // chunk_size}.spacy")
+    doc_bin.to_disk(f"ner/ner_training_data_chunk_{i // chunk_size}.spacy")
 
 print("SpaCy training data saved in chunks.")

@@ -1,7 +1,6 @@
 import re
 import ast
 
-
 def extract_quantities(text):
     """Extract quantities from the text."""
     quantity_patterns = [

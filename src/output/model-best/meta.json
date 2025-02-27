@@ -18,8 +18,7 @@
   },
   "labels":{
     "ner":[
-      "INGREDIENT",
-      "QUANTITY"
+
     ]
   },
   "pipeline":[

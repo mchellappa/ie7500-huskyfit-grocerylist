@@ -189,6 +189,13 @@ To run the FastAPI application, execute the following command:
 uvicorn src.main:app --reload
 ```
 
+1. Preprocessing on both datasets
+1.1 What preprocessing is required
+2. NER for Ingredients
+3. NER for Quantities
+4. Model selection for Classification
+4.1 Cuisine / Grocery group
+
 You can then send a POST request to the `/process-recipe` endpoint with the recipe text to receive processed quantities and ingredients.
 
 ## API Endpoint
