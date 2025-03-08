@@ -13,18 +13,19 @@ if not os.path.exists(model_path):
 nlp = spacy.blank("en")
 
 class RecipeRequest(BaseModel):
-    ingredients: str
+    recipe: str
 
 class Entity(BaseModel):
     quantity: str  # Change to string to accommodate empty quantities
     ingredient: str
 
 class RecipeResponse(BaseModel):
+    cuisine: str
     entities: list[Entity]
 
 @router.post("/process-recipe/")
 async def process_recipe(request: RecipeRequest):
-    recipe_text = request.ingredients
+    recipe_text = request.recipe
     try:
         nlp_ner = spacy.load(model_path)
     except IOError:
@@ -45,4 +46,4 @@ async def process_recipe(request: RecipeRequest):
                 entity = Entity(ingredient=ent.text, quantity="")
                 entities.append(entity)
 
-    return RecipeResponse(entities=entities)
+    return RecipeResponse(cuisine='indian', entities=entities)
