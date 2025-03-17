@@ -1,5 +1,4 @@
 #### Project Proposal: Ingredient Extraction and Categorization 
-
  
 #### IE 7500: Applied Natural Language Processing in Engineering - Group A 
 
@@ -11,199 +10,117 @@
 
 #### Title 
 
-### Automated Ingredient Extraction and Categorization from Recipe Texts Using Natural Language Processing 
+# Ingredient Intelligence
+
+This project combines Pre-Processing, Exploratory data analysis (EDA), Named Entity Recognition (NER) model training, and cuisine classification to extract ingredients from recipes and predict their cuisines. It processes raw recipe data, trains a SpaCy NER model to identify ingredients and quantities, and uses an ensemble machine learning model to classify cuisines based on those ingredients.
+
+## Table of Contents
+1. Project Overview
+2. Requirements
+3. File Descriptions
+   - Data Preprocessing and EDA ('preprocessing-notebook.ipynb')
+   - NER Model Training ('ner-notebook.ipynb')
+   - Cuisine Prediction Classification ('cuisine_prediction_classification.ipynb')
+4. Usage
+5. Outputs
+6. Notes
+
+## Project Overview
+The project is a three-phase pipeline for analyzing and classifying recipe data:
+1. Data Preprocessing and EDA: Cleans and normalizes a raw recipe dataset ('recipes_data.csv'), preparing it for NER tasks by removing noise and standardizing text.
+2. NER Model Training: Trains a SpaCy NER model to extract 'INGREDIENT' and 'QUANTITY' entities from recipe text, enhancing ingredient identification.
+3. Cuisine Prediction Classification: Uses an ensemble of Random Forest, Gradient Boosting, and Linear SVC models to predict cuisines from identified ingredients, validated on test samples and applied to a large dataset.
+
+This end to end workflow transforms unstructured recipe text into structured data (ingredients) and predicts cuisines, enabling applications like recipe categorization or recommendation systems.
+
+## Requirements
+- Python: 3.8+
+- Libraries:
+  - 'pandas', 'numpy', 'scikit-learn', 'matplotlib', 'seaborn', 'wordcloud', 'ast' (EDA)
+  - 'spacy', 'random' (NER)
+  - 'plotly', 'joblib', 'tqdm'
+- Install dependencies:
+  '''pandas numpy scikit-learn matplotlib seaborn wordcloud spacy plotly joblib tqdm
+  '''
+- Datasets:
+  - 'recipes_data.csv': Raw recipe data with 'title', 'ingredients', 'directions', 'NER'([Recipe Dataset](https://www.kaggle.com/datasets/wilmerarltstrmberg/recipe-dataset-over-2m/data)).   
+  - 'train.json', 'test.json': Labeled data for cuisine classification ([Recipe Ingredients Dataset](https://www.kaggle.com/datasets/kaggle/recipe-ingredients-dataset/data)).
+
+## File Descriptions
+
+### Data Preprocessing and EDA
+Purpose: Prepares raw recipe data for NER and downstream tasks through EDA and cleaning.
+
+Key Components:
+- Loads 'recipes_data.csv',splits into 80% training and 20% testing.
+- Performs EDA (e.g., ingredient counts, NER label distribution) with visualizations (word clouds, bar plots).
+- Cleans data by removing nulls, duplicates, and rows with good NER accuracy.
+- Normalizes text (e.g., fractions to decimals, standardized units) into 'normalized_combined'.
+
+
+### NER Model Training
+Purpose: Trains a SpaCy NER model to extract ingredients and quantities from preprocessed recipe text.
+
+Key Components:
+- Loads 'preprocessed_train_data.csv' and 'test_data.csv'.
+- Sets up a SpaCy pipeline with custom 'quantity_extractor' and 'ingredient_extractor' components.
+- Trains the NER model on training data (10 iterations) and saves it as 'ner_model'.
+- Applies the model to test data, saving predictions as 'predicted_ingredients.csv'.
+- Tests on sample recipes, displaying entities with 'displacy'.
+
+Inputs: 'preprocessed_train_data.csv', 'test_data.csv'  
+Outputs: 'training_data.spacy', 'ner_model', 'predicted_ingredients.csv', console predictions
+
+
+### Cuisine Prediction Classification
+Purpose: Predicts cuisines from ingredients using an ensemble model, validated on test cases and scaled to a full dataset.
+
+Key Components:
+- Tests the ensemble on 5 hardcoded examples, displaying results in an interactive table.
+- Predicts cuisines for 'predicted_ingredients.csv' (2M recipes) in batches, with visualizations.
+- 'cuisine_prediction_classification.ipynb': Trains Random Forest, Gradient Boosting, and Linear SVC models on 'train.json', evaluates on 'test.json', and applies to 'predicted_ingredients.csv'.
+
+Inputs: 
+- 'train.json', 'test.json' (training/evaluation)
+- 'predicted_ingredients.csv' (NER output)
+- Model files: 'randomforest_model.pkl', 'gradientboosting_model.pkl', 'linearsvc_model.pkl', 'label_encoder.pkl'
+
+Outputs: 
+- Model files, 'ensemble_test_predictions.csv', 'ensemble_recipes_with_cuisines.csv'
+- Interactive tables, bar charts
 
-### Introduction 
-
-Recipes are a rich source of culinary data, often containing unstructured text that includes ingredients, quantities, and preparation instructions. Extracting and categorizing ingredients from these texts can facilitate various applications, such as nutritional analysis, recipe personalization, and inventory management.  
-
-### Problem Statement  
-
-Manually extracting ingredients and categorizing them from recipe texts is labor-intensive, error-prone, and often inefficient. This challenge is compounded by the diverse formats and variations found in recipe texts, from differing terminology and units to inconsistencies in ingredient descriptions. An automated system utilizing Natural Language Processing techniques could vastly improve the accuracy and speed of this process. Such a system would enable more reliable recipe analysis, facilitate dietary planning, and support the growing field of culinary research, all while reducing human error. 
-
-### Objectives 
-
-## Ingredient Extraction: To develop a system that accurately extracts ingredient names from recipe texts. 
-
-## Ingredient Categorization: To categorize extracted ingredients into meaningful groups such as ingredient types (e.g., spices, vegetables) or cuisines (e.g., Italian, Indian). 
-
-## System Evaluation: To evaluate the system's performance and accuracy in real-world recipe datasets. 
-
-### Dataset Selection  
-
-We will use the Recipe Dataset (over 2M) Food dataset available on Kaggle. This dataset contains: 
-
-https://www.kaggle.com/datasets/wilmerarltstrmberg/recipe-dataset-over-2m/data 
-
-Over 2 million recipes 
-
-Detailed information including ingredients, instructions, and nutritional facts 
-
-A diverse range of cuisines and dietary categories 
-
-The large volume and variety of recipes in this dataset make it ideal for training a robust NLP model for ingredient extraction and categorization. 
-
- 
-
-### Methodology 
-
-## Data Labelling and Text Preprocessing 
-
-Data Labelling for ingredients, quantities, measurement 
-
-Clean and normalize recipe texts to ensure consistency in formats (e.g., removing special characters, handling abbreviations). 
-
-Tokenization: break down text into words 
-
-Lowercase: convert to lower case 
-
-Lemmatization: reduce words to base form 
-
-Remove stop words: remove words like 'a', 'the', 'of' unless they are useful for context 
-
- 
-
-### Ingredient Extraction 
-
-
-
- 
-
-### Execution 
-
-Objective: To develop a NER Extraction model to select the Ingredients and Quantities from a given recipe text 
-
-Dataset Prep: 
-
-Download the dataset from Kaggle 
-
-Clean and format the dataset by: 
-
-Removing duplicates and null values. 
-
-Standardizing ingredient text (e.g., lowercase, removing special characters). 
-
-Converting string lists to Python lists using ast.literal_eval. 
-
-Define the Quantities and Ingredient regex for the model 
-
- 
-
-Model Selection: In the initial phase, the focus will be on Spacy Rule based model. Using regex rules, will train the model and evaluate the model with the test dataset. Based on the results we will choose BERT or Deep learning. 
-
- 
-
-### Ingredient Categorization 
-
-## Model Selection 
-
-
-
- 
-
- 
-
-## Execution 
-
-Objective: To develop a categorization model to classify ingredients into groups of either ingredient types or cuisines. 
-
-Data Labeling: Correctly labeled with the appropriate category (e.g., "vegetable," "spice," or specific cuisine types like "Italian," "Indian," etc.) to form the ground truth for model training. 
-
-Feature Extraction: 
-
-Ingredient Representation: Convert the ingredient names into numerical representations that can be fed into machine learning models. Several techniques will be explored to identify the better fit for the task among the options 
-
-TF-IDF (Term Frequency-Inverse Document Frequency): Capture the importance of each ingredient in relation to others by weighing its frequency across different recipes. 
-
-Bag-of-Words (BoW): Treat each ingredient as a unique token in a collection of recipes to create a sparse vector representation. 
-
-Embeddings: Pre-trained word embeddings (e.g., Word2Vec, GloVe) will be used to map ingredients to continuous vector spaces. 
-
- 
-
-Model Selection: In the initial phase, the focus will be on Gradient Boosting methods and Logistic Regression for ingredient classification. If additional model refinement is required, other techniques such as Random Forest, SVM, or Neural Networks may be explored in subsequent stages. 
-
- 
-
-Evaluation 
-
-Measure the system's performance using precision, recall, and F1-score. 
-
-Validate the ingredient extraction and categorization accuracy on a test dataset. 
-
-Expected Outcomes   
-
-An NLP model capable of accurately extracting ingredients, quantities, and units from recipe texts 
-
-A classification system to categorize extracted ingredients/recipes into food groups 
-
-A performance evaluation framework to assess the accuracy of extraction and categorization 
-
-An interface to generate and extract ingredients from recipe text. 
-
-# FastAPI Recipe Processing Application
-
-This project is a FastAPI application that processes recipe text to extract quantities and ingredients using a SpaCy model. 
-
-## Project Structure
-
-```
-Project
-├── src
-│   ├── main.py          # Entry point of the FastAPI application
-│   ├── spacy_train.py   # Logic for initializing SpaCy model and processing text
-│   └── types
-│       └── index.ts     # TypeScript interfaces for type checking
-├── requirements.txt      # Project dependencies
-├── README.md             # Project documentation
-└── .env                  # Environment variables
-```
-
-## Setup Instructions
-
-1. **Clone the repository:**
-   ```
-   git clone <repository-url>
-   cd my-fastapi-app
-   ```
-
-2. **Create a virtual environment:**
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-3. **Install dependencies:**
-   ```
-   pip install -r requirements.txt
-   ```
-
-4. **Set up environment variables:**
-   Create a `.env` file in the root directory and add any necessary configuration settings.
 
 ## Usage
 
-To run the FastAPI application, execute the following command:
+### Running Data Preprocessing and EDA
+   Place 'recipes_data.csv' in the working directory.
 
-```
-uvicorn src.main:app --reload
-```
+### Running NER Model Training
+  Ensure 'preprocessed_train_data.csv' and 'test_data.csv' are present.
 
-1. Preprocessing on both datasets
-1.1 What preprocessing is required
-2. NER for Ingredients
-3. NER for Quantities
-4. Model selection for Classification
-4.1 Cuisine / Grocery group
+### Running Cuisine Prediction Classification
+  Place 'train.json', 'test.json', and 'predicted_ingredients.csv' in the directory.
 
-You can then send a POST request to the `/process-recipe` endpoint with the recipe text to receive processed quantities and ingredients.
+- Test Full Dataset:
+  Ensure 'predicted_ingredients.csv' and model files are present.
 
-## API Endpoint
 
-- **POST /process-recipe**
-  - Request Body: JSON object containing the recipe text.
-  - Response: JSON object with extracted quantities and ingredients.
+## Outputs
+- Preprocessing and EDA:
+  - Files: 'preprocessed_train_data.csv' ('normalized_combined', 'NER'), 'test_data.csv' ('test_recipe', 'Actual_NER').
+  - Visualizations: Word cloud, bar plots, scatter plots, histogram.
+  - Console: Dataset stats, cleaning progress.
+- NER Training:
+  - Files: 'ner_model', 'predicted_ingredients.csv'.
 
-## License
+- Cuisine Prediction:
+  - Main: Model files, 'ensemble_test_predictions.csv', 'ensemble_recipes_with_cuisines.csv', extensive visualizations.
+  - Test 5 Samples: Table (e.g., 'rice, soy sauce -> chinese, 0.483235'), bar charts.
+  - Test Full Dataset: 'recipes_with_predicted_cuisines.csv', batch CSVs, table, bar chart, histogram, stats.
 
-This project is licensed under the MIT License.
+
+## Notes
+- Pipeline Flow: Run 'preprocessing-notebook.ipynb' first, then 'ner-notebook.ipynb', and finally 'cuisine_prediction_classification.py' and its test scripts. 
+- NER: Increase iterations (e.g., 20–50) for better accuracy.
+- Cuisine Prediction: Tweak 'batch_size' (default 10k) for full dataset processing.
+- Visualization: Interactive plots (e.g., Plotly tables, Matplotlib figures),not all vizulizations are rendered by git, Please download and load the notebookfile in Juypiter notebook.
