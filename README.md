@@ -52,7 +52,7 @@ This end to end workflow transforms unstructured recipe text into structured dat
 Purpose: Prepares raw recipe data for NER and downstream tasks through EDA and cleaning.
 
 Key Components:
-- Loads 'recipes_data.csv',splits into 80% training and 20% testing.
+- Loads 'recipes_data.csv',sample 150000 records, splits into 80% training and 20% testing.
 - Performs EDA (e.g., ingredient counts, NER label distribution) with visualizations (word clouds, bar plots).
 - Cleans data by removing nulls, duplicates, and rows with good NER accuracy.
 - Normalizes text (e.g., fractions to decimals, standardized units) into 'normalized_combined'.
@@ -120,7 +120,7 @@ Outputs:
 
 
 ## Notes
-- Pipeline Flow: Run 'preprocessing-notebook.ipynb' first, then 'ner-notebook.ipynb', and finally 'cuisine_prediction_classification.py' and its test scripts. 
+- Pipeline Flow: Run 'preprocessing-notebook.ipynb' first, then 'ner-notebook.ipynb', and finally 'cuisine_prediction_classification.ipynb' and its test scripts. 
 - NER: Increase iterations (e.g., 20–50) for better accuracy.
 - Cuisine Prediction: Tweak 'batch_size' (default 10k) for full dataset processing.
 - Visualization: Interactive plots (e.g., Plotly tables, Matplotlib figures),not all vizulizations are rendered by git, Please download and load the notebookfile in Juypiter notebook.

@@ -1,5 +1,0 @@
-FastAPI
-spacy
-uvicorn
-pydantic
-python-dotenv
