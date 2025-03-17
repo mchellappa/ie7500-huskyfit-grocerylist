@@ -38,7 +38,7 @@ This end to end workflow transforms unstructured recipe text into structured dat
 - Libraries:
   - 'pandas', 'numpy', 'scikit-learn', 'matplotlib', 'seaborn', 'wordcloud', 'ast' (EDA)
   - 'spacy', 'random' (NER)
-  - 'plotly', 'joblib', 'tqdm' (Cuisine Prediction)
+  - 'plotly', 'joblib', 'tqdm'
 - Install dependencies:
   '''pandas numpy scikit-learn matplotlib seaborn wordcloud spacy plotly joblib tqdm
   '''
@@ -48,28 +48,23 @@ This end to end workflow transforms unstructured recipe text into structured dat
 
 ## File Descriptions
 
-### Data Preprocessing and EDA ('recipe_preprocessing_eda.py')
+### Data Preprocessing and EDA
 Purpose: Prepares raw recipe data for NER and downstream tasks through EDA and cleaning.
 
 Key Components:
-- Loads 'recipes_data.csv', samples 150k rows, and splits into 80% training and 20% testing.
+- Loads 'recipes_data.csv',splits into 80% training and 20% testing.
 - Performs EDA (e.g., ingredient counts, NER label distribution) with visualizations (word clouds, bar plots).
-- Cleans data by removing nulls, duplicates, and rows with <90% NER accuracy.
+- Cleans data by removing nulls, duplicates, and rows with good NER accuracy.
 - Normalizes text (e.g., fractions to decimals, standardized units) into 'normalized_combined'.
-- Saves 'preprocessed_train_data.csv' and 'test_data.csv'.
-
-Inputs: 'recipes_data.csv'  
-Outputs: 'preprocessed_train_data.csv', 'test_data.csv', visualizations
 
 
-
-### NER Model Training ('recipe_ner_training.py')
+### NER Model Training
 Purpose: Trains a SpaCy NER model to extract ingredients and quantities from preprocessed recipe text.
 
 Key Components:
 - Loads 'preprocessed_train_data.csv' and 'test_data.csv'.
 - Sets up a SpaCy pipeline with custom 'quantity_extractor' and 'ingredient_extractor' components.
-- Trains the NER model on training data (10 iterations) and saves it as 'ner_model/'.
+- Trains the NER model on training data (10 iterations) and saves it as 'ner_model'.
 - Applies the model to test data, saving predictions as 'predicted_ingredients.csv'.
 - Tests on sample recipes, displaying entities with 'displacy'.
 
@@ -77,13 +72,13 @@ Inputs: 'preprocessed_train_data.csv', 'test_data.csv'
 Outputs: 'training_data.spacy', 'ner_model', 'predicted_ingredients.csv', console predictions
 
 
-### Cuisine Prediction Classification ('cuisine_prediction_classification.py', 'test_5_samples.py', 'test_full_dataset.py')
+### Cuisine Prediction Classification
 Purpose: Predicts cuisines from ingredients using an ensemble model, validated on test cases and scaled to a full dataset.
 
 Key Components:
-- 'test_5_samples.py': Tests the ensemble on 5 hardcoded examples, displaying results in an interactive table.
-- 'test_full_dataset.py': Predicts cuisines for 'predicted_ingredients.csv' (2M recipes) in batches, with visualizations.
-- 'cuisine_prediction_classification.py': Trains Random Forest, Gradient Boosting, and Linear SVC models on 'train.json', evaluates on 'test.json', and applies to 'predicted_ingredients.csv'.
+- Tests the ensemble on 5 hardcoded examples, displaying results in an interactive table.
+- Predicts cuisines for 'predicted_ingredients.csv' (2M recipes) in batches, with visualizations.
+- 'cuisine_prediction_classification.ipynb': Trains Random Forest, Gradient Boosting, and Linear SVC models on 'train.json', evaluates on 'test.json', and applies to 'predicted_ingredients.csv'.
 
 Inputs: 
 - 'train.json', 'test.json' (training/evaluation)
@@ -91,50 +86,23 @@ Inputs:
 - Model files: 'randomforest_model.pkl', 'gradientboosting_model.pkl', 'linearsvc_model.pkl', 'label_encoder.pkl'
 
 Outputs: 
-- Model files, 'ensemble_test_predictions.csv', 'ensemble_recipes_with_cuisines.csv' (main script)
-- Interactive tables, bar charts (test scripts)
-- 'recipes_with_predicted_cuisines.csv', batch CSVs (full dataset)
+- Model files, 'ensemble_test_predictions.csv', 'ensemble_recipes_with_cuisines.csv'
+- Interactive tables, bar charts
+
 
 ## Usage
 
 ### Running Data Preprocessing and EDA
-1. Place 'recipes_data.csv' in the working directory.
-2. Run:
-   '''bash
-   python recipe_preprocessing_eda.py
-   '''
-3. Takes 5–15 minutes for 150k rows.
+   Place 'recipes_data.csv' in the working directory.
 
 ### Running NER Model Training
-1. Ensure 'preprocessed_train_data.csv' and 'test_data.csv' are present.
-2. Run:
-   '''bash
-   python recipe_ner_training.py
-   '''
-3. Takes 10–30 minutes for training.
+  Ensure 'preprocessed_train_data.csv' and 'test_data.csv' are present.
 
 ### Running Cuisine Prediction Classification
-- Main Script:
-  1. Place 'train.json', 'test.json', and 'predicted_ingredients.csv' in the directory.
-  2. Run:
-     '''bash
-     python cuisine_prediction_classification.py
-     '''
-  3. Takes hours due to training and 2M recipe processing.
-- Test 5 Samples:
-  1. Ensure model files are present.
-  2. Run:
-     '''bash
-     python test_5_samples.py
-     '''
-  3. Executes in seconds.
+  Place 'train.json', 'test.json', and 'predicted_ingredients.csv' in the directory.
+
 - Test Full Dataset:
-  1. Ensure 'predicted_ingredients.csv' and model files are present.
-  2. Run:
-     '''bash
-     python test_full_dataset.py
-     '''
-  3. Takes 20–60 minutes with batch size 10k.
+  Ensure 'predicted_ingredients.csv' and model files are present.
 
 
 ## Outputs
@@ -143,25 +111,16 @@ Outputs:
   - Visualizations: Word cloud, bar plots, scatter plots, histogram.
   - Console: Dataset stats, cleaning progress.
 - NER Training:
-  - Files: 'training_data.spacy', 'ner_model', 'predicted_ingredients.csv'.
-  - Console: Training losses, sample predictions (e.g., 'salsa -> INGREDIENT', '1 cup -> QUANTITY').
+  - Files: 'ner_model', 'predicted_ingredients.csv'.
+
 - Cuisine Prediction:
   - Main: Model files, 'ensemble_test_predictions.csv', 'ensemble_recipes_with_cuisines.csv', extensive visualizations.
   - Test 5 Samples: Table (e.g., 'rice, soy sauce -> chinese, 0.483235'), bar charts.
-  - Test Full Dataset: 'recipes_with_predicted_cuisines.csv', batch CSVs, table, bar chart, histogram, stats (e.g., 'Average Confidence: 0.7542').
+  - Test Full Dataset: 'recipes_with_predicted_cuisines.csv', batch CSVs, table, bar chart, histogram, stats.
 
-Sample Outputs:
-- 'preprocessed_train_data.csv': '"chicken soup 2 cup chicken 1 teaspoon salt","[chicken, salt]"'
-- 'predicted_ingredients.csv': '"{salsa, cilantro, beef}"'
-- Test 5 Samples:
-  '''
-  Ingredients: rice, soy sauce... | Predicted Cuisine: chinese | Confidence: 0.483235 | Correct: True
-  '''
 
 ## Notes
-- Pipeline Flow: Run 'preprocessing-notebook.ipynb' first, then 'ner-notebook.ipynb', and finally 'cuisine_prediction_classification.py' and its test scripts.
-- Scalability: 
-  - Preprocessing: Adjust 'n=150000' for larger samples.
-  - NER: Increase iterations (e.g., 20–50) for better accuracy.
-  - Cuisine Prediction: Tweak 'batch_size' (default 10k) for full dataset processing.
+- Pipeline Flow: Run 'preprocessing-notebook.ipynb' first, then 'ner-notebook.ipynb', and finally 'cuisine_prediction_classification.py' and its test scripts. 
+- NER: Increase iterations (e.g., 20–50) for better accuracy.
+- Cuisine Prediction: Tweak 'batch_size' (default 10k) for full dataset processing.
 - Visualization: Interactive plots (e.g., Plotly tables, Matplotlib figures),not all vizulizations are rendered by git, Please download and load the notebookfile in Juypiter notebook.
