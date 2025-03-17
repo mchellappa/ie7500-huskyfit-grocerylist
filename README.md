@@ -125,5 +125,5 @@ Outputs:
 - Cuisine Prediction: Tweak 'batch_size' (default 10k) for full dataset processing.
 - Visualization: Interactive plots (e.g., Plotly tables, Matplotlib figures),not all vizulizations are rendered by git, Please download and load the notebookfile in Juypiter notebook.
 - We trained the model using a subset of 150,000 records from the dataset.This decision was made due to resource constraints, including computational power. 
-  While processing the entire dataset would be ideal, we ensured that the selected subset is representative of the overall data distribution to maintain the integrity and reliability of the model's performance.
-  In future iterations, we plan to: Expand the training to the full dataset, Further tune the model parameters & Explore advanced techniques to improve performance.
+- While processing the entire dataset would be ideal, we ensured that the selected subset is representative of the overall data distribution to maintain the integrity and reliability of the model's performance.
+- In future iterations, with sufficient computational resources, we will try to expand the training to the full dataset, further tune the model parameters, and explore advanced techniques to improve performance.
