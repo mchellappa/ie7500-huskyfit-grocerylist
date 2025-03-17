@@ -28,7 +28,7 @@ This project combines Pre-Processing, Exploratory data analysis (EDA), Named Ent
 ## Project Overview
 The project is a three-phase pipeline for analyzing and classifying recipe data:
 1. Data Preprocessing and EDA: Cleans and normalizes a raw recipe dataset ('recipes_data.csv'), preparing it for NER tasks by removing noise and standardizing text.
-2. NER Model Training: Trains a SpaCy NER model to extract 'INGREDIENT' and 'QUANTITY' entities from recipe text, enhancing ingredient identification.
+2. NER Model Training: Trains a SpaCy NER model to extract 'INGREDIENT' and 'QUANTITY' entities using span-based annotation(rule based matching) from recipe text, enhancing ingredient identification.
 3. Cuisine Prediction Classification: Uses an ensemble of Random Forest, Gradient Boosting, and Linear SVC models to predict cuisines from identified ingredients, validated on test samples and applied to a large dataset.
 
 This end to end workflow transforms unstructured recipe text into structured data (ingredients) and predicts cuisines, enabling applications like recipe categorization or recommendation systems.
