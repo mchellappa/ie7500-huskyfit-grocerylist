@@ -21,7 +21,6 @@ if len(sys.argv) < 3:
 input_file = sys.argv[1]
 test_data_file = sys.argv[2]
 
-input_file = sys.argv[1]
 train_df = pd.read_csv(input_file)
 print(f'Length of train data is {len(train_df)}')
 train_df.head()
@@ -249,6 +248,8 @@ plt.show()
 test_df = pd.read_csv(test_data_file)
 test_df.head()
 
+test_df = test_df.rename(columns={'actual_NER': 'filtered_NER'})
+
 # Load and test all three NER models
 def test_ner(recipe, model_path):
     nlp = spacy.load(model_path)
@@ -271,6 +272,42 @@ for i in range(1, 4):
         *test_df['test_recipe'].apply(lambda x: test_ner(x, model_path))
     )
 
+texts = test_df['test_recipe'].tolist()
+ner_tags = test_df['predicted_ingredients'].tolist()
+
+nlp = spacy.blank("en")
+
+# Create a dictionary of terms
+terms = {}
+patterns = []
+
+for tags in ner_tags:
+    for tag in tags:
+        if tag not in terms:
+            terms[tag] = {'label': 'INGREDIENT'}
+            patterns.append(nlp(tag))
+
+# Initialize the PhraseMatcher
+ingredient_matcher = PhraseMatcher(nlp.vocab)
+ingredient_matcher.add("INGREDIENT", None, *patterns)
+
+nlp.add_pipe("quantity_extractor", last=True)
+nlp.add_pipe("ingredient_extractor", last=True)
+nlp.analyze_pipes()
+#Creating annotations for predicted ingredient values
+
+from spacy.tokens import DocBin
+
+predicted_data = [(text, {"entities": []}) for text in texts]
+
+for i, (text, annotations) in enumerate(predicted_data):
+    doc = nlp(text)
+    entities = [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents]
+    predicted_data[i] = (text, {"entities": entities})
+
+texts = test_df['test_recipe'].tolist()
+ner_tags = test_df['filtered_NER'].apply(eval).tolist()
+
 # Save results for each model
 for i in range(1, 4):
     test_df[f'predicted_ingredients_model_{i}'].to_csv(f'predicted_ingredients_model_{i}.csv', index=False)
@@ -283,6 +320,10 @@ for i, (text, annotations) in enumerate(actual_data):
     doc = nlp(text)
     entities = [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents]
     actual_data[i] = (text, {"entities": entities})
+
+nlp = spacy.blank("en")
+
+
 
 # Evaluate each model
 from spacy.training import Example
