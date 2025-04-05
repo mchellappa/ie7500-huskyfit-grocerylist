@@ -29,7 +29,8 @@ share/python-wheels/
 MANIFEST
 ner_training_data*
 recipe_dataset*
-
+src/input/
+src/output/
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
