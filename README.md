@@ -2,11 +2,11 @@
  
 #### IE 7500: Applied Natural Language Processing in Engineering - Group A 
 
-## Divya Maheshkumar 
+###### Divya Maheshkumar 
 
-## Muthu Chellappa 
+###### Muthu Chellappa 
 
-## SenthilKumaran Ramanathan   
+###### SenthilKumaran Ramanathan   
 
 #### Title 
 
