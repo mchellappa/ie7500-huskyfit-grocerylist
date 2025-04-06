@@ -3,6 +3,9 @@ from spacy.language import Language
 from spacy.matcher import Matcher
 from spacy.matcher import PhraseMatcher
 from spacy.tokens import Span
+import matplotlib.pyplot as plt
+from tabulate import tabulate
+from spacy.scorer import Scorer
 
 
 def save_training_data(data, output_file):
@@ -50,8 +53,7 @@ def test_and_save_models(test_df, test_ner, model_count=3, column_name="test_rec
 
     return test_df
 
-
-def evaluate_model(test_data, actual_data):
+def evaluate_model(test_data, actual_data, nlp):
     predicted_data = [(text, {"entities": []}) for text in test_data]
     
     # Generate predictions for all texts
@@ -83,23 +85,46 @@ def evaluate_model(test_data, actual_data):
     metrics = scorer.score(examples)
     
     return metrics
+    
+def print_metrics(metrics):
+    print("Model Metrics:")
+    print(f"Token Accuracy: {metrics['token_acc']}")
+    print(f"Token Precision: {metrics['token_p']}")
+    print(f"Token Recall: {metrics['token_r']}")
+    print(f"Token F1 Score: {metrics['token_f']}")
+    print(f"Entity Precision: {metrics['ents_p']}")
+    print(f"Entity Recall: {metrics['ents_r']}")
+    print(f"Entity F1 Score: {metrics['ents_f']}")
 
-
-import matplotlib.pyplot as plt
+    # Prepare data for entity metrics in a table format
+    entity_data = []
+    for entity, scores in metrics['ents_per_type'].items():
+        entity_data.append([entity, scores['p'], scores['r'], scores['f']])
+    
+    # Print the table
+    print(tabulate(entity_data, headers=["Entity", "Precision", "Recall", "F1 Score"], tablefmt="grid"))
+    print("\n")
 
 def save_metrics_and_plot(parameter_sets, all_metrics):
-    # Write metrics to a file with run parameters
+    # Checking if the file exists and if it has been written before
+    file_exists = os.path.isfile("metrics_summary.csv")
+    
+    # Open the file and append metrics
     with open("metrics_summary.csv", "a") as f:
-        f.write("model,parameter,precision,recall,f1_score\n")
-        for i, metrics in enumerate(all_metrics):
-            f.write(f"model_{i + 1},{parameter_sets[i]},{metrics['ents_p']},{metrics['ents_r']},{metrics['ents_f']}\n")
+        # Only write the header if the file doesn't exist or is empty
+        if not file_exists:
+            f.write("model,parameter,precision,recall,f1_score\n")
+
+        # Write the metrics for each parameter set
+        for i, metric in enumerate(all_metrics):
+            f.write(f"model_{i + 1},{parameter_sets[i]},{metric['ents_p']},{metric['ents_r']},{metric['ents_f']}\n")
 
     # Collect metrics for visualization
-    precisions = [metrics["ents_p"] for metrics in all_metrics]
-    recalls = [metrics["ents_r"] for metrics in all_metrics]
-    f1_scores = [metrics["ents_f"] for metrics in all_metrics]
+    precisions = [metric["ents_p"] for metrics in all_metrics]
+    recalls = [metric["ents_r"] for metrics in all_metrics]
+    f1_scores = [metric["ents_f"] for metrics in all_metrics]
+    
     return precisions, recalls, f1_scores
-
 
 def plot_metrics(precisions, recalls, f1_scores):
     """
