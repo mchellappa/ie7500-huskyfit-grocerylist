@@ -57,6 +57,7 @@ async def process_recipe(request: RecipeRequest):
     
     entities = []  # Initialize as an empty list
     ingredients_list = []
+    print(doc.ents)
     for ent in doc.ents:
         if ent.label_ == "QUANTITY":
             for i_ent in doc.ents:
