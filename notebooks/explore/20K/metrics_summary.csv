@@ -1,0 +1,12 @@
+model,parameter,precision,recall,f1_score
+model_1,{'max_iterations': 20, 'initial_lr': 0.01, 'dropout_rate': 0.5, 'min_loss_improvement': 5000, 'patience': 3},0.11583605926496056,0.0033367513787656237,0.0064866495700709
+model_2,{'max_iterations': 30, 'initial_lr': 0.001, 'dropout_rate': 0.4, 'min_loss_improvement': 3000, 'patience': 5},0.1156515034695451,0.0033256658260122497,0.006465412735785521
+model_3,{'max_iterations': 25, 'initial_lr': 0.0001, 'dropout_rate': 0.6, 'min_loss_improvement': 2000, 'patience': 4},0.11393140864173609,0.0032591525094920045,0.00633702633961288
+model,parameter,precision,recall,f1_score
+model_1,{'max_iterations': 20, 'initial_lr': 0.01, 'dropout_rate': 0.5, 'min_loss_improvement': 5000, 'patience': 3},0.11583605926496056,0.0033367513787656237,0.0064866495700709
+model_2,{'max_iterations': 30, 'initial_lr': 0.001, 'dropout_rate': 0.4, 'min_loss_improvement': 3000, 'patience': 5},0.1156515034695451,0.0033256658260122497,0.006465412735785521
+model_3,{'max_iterations': 25, 'initial_lr': 0.0001, 'dropout_rate': 0.6, 'min_loss_improvement': 2000, 'patience': 4},0.11393140864173609,0.0032591525094920045,0.00633702633961288
+model,parameter,precision,recall,f1_score
+model_1,{'max_iterations': 20, 'initial_lr': 0.01, 'dropout_rate': 0.5, 'min_loss_improvement': 5000, 'patience': 3},0.11583605926496056,0.0033367513787656237,0.0064866495700709
+model_2,{'max_iterations': 30, 'initial_lr': 0.001, 'dropout_rate': 0.4, 'min_loss_improvement': 3000, 'patience': 5},0.1156515034695451,0.0033256658260122497,0.006465412735785521
+model_3,{'max_iterations': 25, 'initial_lr': 0.0001, 'dropout_rate': 0.6, 'min_loss_improvement': 2000, 'patience': 4},0.11393140864173609,0.0032591525094920045,0.00633702633961288

@@ -37,6 +37,7 @@ src/output/
 *.manifest
 *.spec
 notebooks/*.pkl
+*.pkl
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

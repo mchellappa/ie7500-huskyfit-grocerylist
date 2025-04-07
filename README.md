@@ -126,4 +126,54 @@ Outputs:
 - Visualization: Interactive plots (e.g., Plotly tables, Matplotlib figures),not all vizulizations are rendered by git, Please download and load the notebookfile in Juypiter notebook.
 - We trained the model using a subset of 150,000 records from the dataset.This decision was made due to resource constraints, including computational power. 
 - While processing the entire dataset would be ideal, we ensured that the selected subset is representative of the overall data distribution to maintain the integrity and reliability of the model's performance.
-- In future iterations, with sufficient computational resources, we will try to expand the training to the full dataset, further tune the model parameters, and explore advanced techniques to improve performance.
+
+##### Project Repository Structure
+
+
+
+```
+/ie7500-huskyfit-grocerylist
+│
+├── src/
+│   ├── api/v1/endpoints/recipe.py # Endpoint to generate ingredients and cuisine using the model
+│   ├── input/                # Raw and preprocessed datasets
+│   │   ├── recipes_data.csv
+│   │   ├── train.json
+│   │   ├── test.json
+│   │   ├── preprocessed_train_data.csv
+│   │   └── test_data.csv
+│   ├── output/               # Model predictions and results
+│   │   ├── predicted_ingredients.csv
+│   │   ├── ensemble_test_predictions.csv
+│   │   ├── ensemble_recipes_with_cuisines.csv
+│   │   └── recipes_with_predicted_cuisines.csv
+│   ├── models/               # Trained models and artifacts
+│   │   ├── ner_model/
+│   │   │   ├── model-best/
+│   │   │   └── model-last/
+│   │   ├── randomforest_model.pkl
+│   │   ├── gradientboosting_model.pkl
+│   │   ├── linearsvc_model.pkl
+│   │   └── label_encoder.pkl
+│   ├── visualizations/       # Generated visualizations
+│   │   ├── wordclouds/
+│   │   ├── bar_plots/
+│   │   └── interactive_tables/
+│   ├── main.py               # Entry point for running the pipeline
+│   └── requirements.txt      # Dependencies
+│
+├── notebooks/                # Jupyter notebooks for each phase
+│   ├── preprocessing-notebook.ipynb
+│   ├── ner-notebook.ipynb
+│   ├── cuisine_prediction_classification.ipynb
+│   └── explore/20k/          # Exploratory analysis
+│       ├── evaluation_code.ipynb
+│       └── README.md
+├── evaluation results/       # Model evaluation metrics and visualizations
+│   ├── Evaluation metrics.png
+│   ├── model1 results.png
+│   ├── model2 results.png
+│   ├── model3 results.png
+│   └── model4 results.png
+└── README.md
+```
