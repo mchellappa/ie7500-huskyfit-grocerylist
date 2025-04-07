@@ -128,9 +128,6 @@ Outputs:
 - While processing the entire dataset would be ideal, we ensured that the selected subset is representative of the overall data distribution to maintain the integrity and reliability of the model's performance.
 
 ##### Project Repository Structure
-
-
-
 ```
 /ie7500-huskyfit-grocerylist
 │
@@ -177,3 +174,48 @@ Outputs:
 │   └── model4 results.png
 └── README.md
 ```
+
+## Setup Instructions
+
+1. **Clone the repository:**
+   ```
+   git clone <repository-url>
+   cd ie7500-huskyfit-grocerylist
+   ```
+
+2. **Create a virtual environment:**
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+
+3. **Install dependencies:**
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables:**
+   Create a `.env` file in the root directory and add any necessary configuration settings.
+
+## 
+
+### Prerequisites
+
+The Models might not be available, Please run the notebooks to generate the models and move them to the appropriate folder.
+
+To run the *Ingredient Intelligence* application, execute the following command:
+
+```
+uvicorn src.main:app --reload
+```
+You can then send a POST request to the `/process-recipe` endpoint with the recipe text to receive processed quantities and ingredients.
+
+## API Endpoint
+
+- **POST /process-recipe**
+  - Request Body: JSON object containing the recipe text.
+  - Response: JSON object with extracted quantities and ingredients.
+
+## License
+
+This project is licensed under the MIT License.
