@@ -80,12 +80,12 @@ def create_unique_cuisines_df(train_df):
     else:
         raise ValueError("The 'cuisine' column is not present in the training data.")
 
-try:
-    unique_cuisines_df = create_unique_cuisines_df(train_df)
-    unique_cuisines_table = create_interactive_table(unique_cuisines_df, "Unique Cuisines in Training Data")
-    unique_cuisines_table.show()
-except ValueError as e:
-    print(e)
+# try:
+#     unique_cuisines_df = create_unique_cuisines_df(train_df)
+#     unique_cuisines_table = create_interactive_table(unique_cuisines_df, "Unique Cuisines in Training Data")
+#     unique_cuisines_table.show()
+# except ValueError as e:
+#     print(e)
 
 def create_common_ingredients_df(train_df, top_n=10):
     if 'ingredients' in train_df.columns:
@@ -105,12 +105,12 @@ def create_common_ingredients_df(train_df, top_n=10):
     else:
         raise ValueError("The 'ingredients' column not in the training data.")
 
-try:
-    common_ingredients_df = create_common_ingredients_df(train_df, top_n=10)
-    common_ingredients_table = create_interactive_table(common_ingredients_df, "Top 10 Most Common Ingredients")
-    common_ingredients_table.show()
-except ValueError as e:
-    print(e)
+# try:
+#     common_ingredients_df = create_common_ingredients_df(train_df, top_n=10)
+#     common_ingredients_table = create_interactive_table(common_ingredients_df, "Top 10 Most Common Ingredients")
+#     common_ingredients_table.show()
+# except ValueError as e:
+#     print(e)
 
 def create_avg_ingredients_df(train_df):
     if 'cuisine' in train_df.columns and 'ingredients' in train_df.columns:
@@ -131,12 +131,12 @@ def create_avg_ingredients_df(train_df):
     else:
         raise ValueError("The 'cuisine' or 'ingredients' column not in the training data.")
 
-try:
-    avg_ingredients_df = create_avg_ingredients_df(train_df)
-    avg_ingredients_table = create_interactive_table(avg_ingredients_df, "Average Number of Ingredients by Cuisine")
-    avg_ingredients_table.show()
-except ValueError as e:
-    print(e)
+# try:
+#     avg_ingredients_df = create_avg_ingredients_df(train_df)
+#     avg_ingredients_table = create_interactive_table(avg_ingredients_df, "Average Number of Ingredients by Cuisine")
+#     avg_ingredients_table.show()
+# except ValueError as e:
+#     print(e)
 
 def process_set_string(set_str):   
     try:
