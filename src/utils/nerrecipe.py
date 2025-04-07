@@ -20,7 +20,7 @@ def save_training_data(data, output_file):
                 ents.append(span)
         doc.ents = ents
         doc_bin.add(doc)
-    doc_bin.to_disk(output_file)
+    doc_bin.to_disk("../output/"+ output_file)
 
 def test_ner(recipe, nlp):
     predicted_ingredients = set()
@@ -52,6 +52,62 @@ def test_and_save_models(test_df, test_ner, model_count=3, column_name="test_rec
         print(f"Results saved for model {i}.")
 
     return test_df
+
+ 
+
+
+def save_metrics_and_plot(parameter_sets, all_metrics):
+    # Checking if the file exists and if it has been written before
+    file_exists = os.path.isfile("metrics_summary.csv")
+    
+    # Open the file and append metrics
+    with open("metrics_summary.csv", "a") as f:
+        # Only write the header if the file doesn't exist or is empty
+        if not file_exists:
+            f.write("model,parameter,precision,recall,f1_score\n")
+
+        # Write the metrics for each parameter set
+        for i, metric in enumerate(all_metrics):
+            f.write(f"model_{i + 1},{parameter_sets[i]},{metric['ents_p']},{metric['ents_r']},{metric['ents_f']}\n")
+
+    # Collect metrics for visualization
+    precisions = [metric["ents_p"] for metrics in all_metrics]
+    recalls = [metric["ents_r"] for metrics in all_metrics]
+    f1_scores = [metric["ents_f"] for metrics in all_metrics]
+    
+    return precisions, recalls, f1_scores
+
+def plot_metrics(precisions, recalls, f1_scores):
+    """
+    Plots Precision, Recall, and F1-Score for each model.
+
+    Args:
+    precisions (list): List of precision scores for each model.
+    recalls (list): List of recall scores for each model.
+    f1_scores (list): List of F1-scores for each model.
+    """
+    plt.figure(figsize=(10, 6))
+    x = range(1, len(precisions) + 1)
+
+    # Plot Precision, Recall, and F1-Score
+    plt.plot(x, precisions, marker='o', label="Precision")
+    plt.plot(x, recalls, marker='o', label="Recall")
+    plt.plot(x, f1_scores, marker='o', label="F1-Score")
+
+    # Set x-ticks and labels
+    plt.xticks(x, [f"Model {i}" for i in x])
+
+    # Add labels and title
+    plt.xlabel("Model")
+    plt.ylabel("Score")
+    plt.title("NER Model Evaluation Metrics")
+
+    # Display the legend and grid
+    plt.legend()
+    plt.grid()
+
+    # Show the plot
+    plt.show()
 
 def evaluate_model(test_data, actual_data, nlp):
     predicted_data = [(text, {"entities": []}) for text in test_data]
@@ -125,35 +181,3 @@ def save_metrics_and_plot(parameter_sets, all_metrics):
     f1_scores = [metric["ents_f"] for metrics in all_metrics]
     
     return precisions, recalls, f1_scores
-
-def plot_metrics(precisions, recalls, f1_scores):
-    """
-    Plots Precision, Recall, and F1-Score for each model.
-
-    Args:
-    precisions (list): List of precision scores for each model.
-    recalls (list): List of recall scores for each model.
-    f1_scores (list): List of F1-scores for each model.
-    """
-    plt.figure(figsize=(10, 6))
-    x = range(1, len(precisions) + 1)
-
-    # Plot Precision, Recall, and F1-Score
-    plt.plot(x, precisions, marker='o', label="Precision")
-    plt.plot(x, recalls, marker='o', label="Recall")
-    plt.plot(x, f1_scores, marker='o', label="F1-Score")
-
-    # Set x-ticks and labels
-    plt.xticks(x, [f"Model {i}" for i in x])
-
-    # Add labels and title
-    plt.xlabel("Model")
-    plt.ylabel("Score")
-    plt.title("NER Model Evaluation Metrics")
-
-    # Display the legend and grid
-    plt.legend()
-    plt.grid()
-
-    # Show the plot
-    plt.show()

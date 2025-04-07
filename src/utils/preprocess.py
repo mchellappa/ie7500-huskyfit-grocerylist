@@ -417,3 +417,15 @@ def filter_ner_column(df_cleaned, valid_phrases, identified_non_ingredients):
     )
 
     return df_cleaned
+
+def calculate_accuracy_count_based(ingredients, ner_labels):
+    # Count the ingredients and NER labels
+    ingredient_count = len(ingredients)
+    ner_label_count = len(ner_labels)
+
+    # Calculate accuracy as the ratio of matching counts
+    if ingredient_count == 0:
+        return 0  # Avoid division by zero
+    accuracy = min(ingredient_count, ner_label_count) / ingredient_count * 100
+
+    return accuracy
